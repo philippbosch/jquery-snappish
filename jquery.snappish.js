@@ -2,7 +2,7 @@
 (function() {
 
   $.fn.snappish = function(opts) {
-    var $main, $slides, $wrapper, counter, inTransition, scrollAnimate, scrollDirection, scrollDistance, scrollLogic, settings, slidesLength;
+    var $main, $slides, $wrapper, counter, inTransition, scrollAnimate, scrollDirection, scrollDistance, scrollLogic, settings, slidesLength, transitionDuration;
     settings = $.extend({}, $.fn.snappish.defaults, opts);
     $wrapper = $(this);
     $main = $(settings.mainSelector);
@@ -12,30 +12,22 @@
     scrollDirection = null;
     scrollDistance = 100 / slidesLength;
     inTransition = false;
-    $wrapper.css({
-      width: '100%',
-      height: '100%',
-      float: 'left',
-      zIndex: 10,
-      overflow: 'hidden'
-    });
-    $main.css({
-      width: '100%',
-      height: "" + (slidesLength * 100) + "%",
-      zIndex: 9,
-      'transition': "all " + settings.transitionDuration + "ms ease"
-    });
-    $slides.css({
-      width: '100%',
-      height: "" + scrollDistance + "%",
-      'transform': 'translateZ(0)'
-    });
+    transitionDuration = $main.css('transition-duration').toString();
+    if (transitionDuration.match(/s$/)) {
+      transitionDuration = transitionDuration.replace(/s$/, '') * 1000;
+    } else {
+      transitionDuration = transitionDuration.replace(/ms$/, '') * 1;
+    }
+    $wrapper.addClass('snappish-wrapper');
+    $main.addClass('snappish-main');
+    $main.addClass("snappish-" + slidesLength + "-slides");
+    $slides.addClass('snappish-slide');
     scrollAnimate = function(distance) {
       inTransition = true;
       $main.css('transform', "translate3d(0," + distance + "%,0)");
       return setTimeout(function() {
         return inTransition = false;
-      }, settings.transitionDuration + settings.transitionWaitAfter);
+      }, transitionDuration + settings.waitAfterTransition);
     };
     scrollLogic = function() {
       if (scrollDirection === 'down' && counter < slidesLength) {
@@ -77,8 +69,7 @@
   $.fn.snappish.defaults = {
     mainSelector: '.snappish-main',
     slidesSelector: '.snappish-main > *',
-    transitionDuration: 1000,
-    transitionWaitAfter: 300,
+    waitAfterTransition: 300,
     mousewheelEnabled: true,
     swipeEnabled: true,
     swipeThreshold: 0.1

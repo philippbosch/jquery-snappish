@@ -12,25 +12,18 @@ $.fn.snappish = (opts) ->
   scrollDirection = null
   scrollDistance = 100/slidesLength
   inTransition = false
+  transitionDuration = $main.css('transition-duration').toString()
+
+  if transitionDuration.match(/s$/)
+    transitionDuration = transitionDuration.replace(/s$/, '') * 1000
+  else
+    transitionDuration = transitionDuration.replace(/ms$/, '') * 1
 
   # Styling
-  $wrapper.css
-    width: '100%'
-    height: '100%'
-    float: 'left'
-    zIndex: 10
-    overflow: 'hidden'
-
-  $main.css
-    width: '100%'
-    height: "#{slidesLength*100}%"
-    zIndex: 9
-    'transition': "all #{settings.transitionDuration}ms ease"
-
-  $slides.css
-    width: '100%'
-    height: "#{scrollDistance}%"
-    'transform': 'translateZ(0)'
+  $wrapper.addClass 'snappish-wrapper'
+  $main.addClass 'snappish-main'
+  $main.addClass "snappish-#{slidesLength}-slides"
+  $slides.addClass 'snappish-slide'
 
   # Scrolling
   scrollAnimate = (distance) ->
@@ -38,7 +31,7 @@ $.fn.snappish = (opts) ->
     $main.css 'transform', "translate3d(0,#{distance}%,0)"
     setTimeout ->
       inTransition = false
-    , settings.transitionDuration + settings.transitionWaitAfter
+    , transitionDuration + settings.waitAfterTransition
 
   scrollLogic = ->
     if scrollDirection == 'down' && counter < slidesLength
@@ -79,8 +72,7 @@ $.fn.snappish = (opts) ->
 $.fn.snappish.defaults =
   mainSelector: '.snappish-main'
   slidesSelector: '.snappish-main > *'
-  transitionDuration: 1000
-  transitionWaitAfter: 300
+  waitAfterTransition: 300
   mousewheelEnabled: true
   swipeEnabled: true
   swipeThreshold: 0.1
