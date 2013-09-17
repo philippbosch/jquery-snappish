@@ -8,8 +8,8 @@ $.fn.snappish = (opts) ->
 
   # Variables
   slidesLength = $slides.length
-  counter = 0
-  scrollDistance = 100/slidesLength
+  currentSlideNum = 0
+  scrollDistancePerSlide = 100/slidesLength
   inTransition = false
   transitionDuration = $main.css('transition-duration').toString()
 
@@ -25,18 +25,34 @@ $.fn.snappish = (opts) ->
   $slides.addClass 'snappish-slide'
 
   # Scrolling
-  scrollAnimate = (distance) ->
-    inTransition = true
-    $main.css 'transform', "translate3d(0,#{distance}%,0)"
-    setTimeout ->
-      inTransition = false
-    , transitionDuration + settings.waitAfterTransition
-
   scroll = (direction) ->
-    if direction == 'down' && counter < slidesLength-1
-      scrollAnimate (++counter)*-scrollDistance
-    else if direction == 'up' && counter > 0
-      scrollAnimate (--counter)*-scrollDistance
+    targetSlideNum = null
+
+    if direction == 'down' && currentSlideNum < slidesLength-1
+      targetSlideNum = currentSlideNum+1
+    else if direction == 'up' && currentSlideNum > 0
+      targetSlideNum = currentSlideNum-1
+
+    if targetSlideNum?
+      inTransition = true
+      targetScrollDistance = targetSlideNum * scrollDistancePerSlide * -1
+
+      eventData =
+        fromSlideNum: currentSlideNum
+        fromSlide: $slides.eq(currentSlideNum)
+        toSlideNum: targetSlideNum
+        toSlide: $slides.eq(targetSlideNum)
+        wrapper: $wrapper
+        main: $main
+        transitionDuration: transitionDuration
+
+      $wrapper.trigger 'scrollbegin.snappish', eventData
+      $main.css 'transform', "translate3d(0,#{targetScrollDistance}%,0)"
+      currentSlideNum = targetSlideNum
+      setTimeout ->
+        inTransition = false
+        $wrapper.trigger 'scrollend.snappish', eventData
+      , transitionDuration
 
   # Mousewheel handling
   if settings.mousewheelEnabled
@@ -58,12 +74,13 @@ $.fn.snappish = (opts) ->
     $wrapper.on 'swipedown', (e) ->
       scroll('up')
 
+  return $wrapper
+
 
 # Default configuration
 $.fn.snappish.defaults =
   mainSelector: '.snappish-main'
   slidesSelector: '.snappish-main > *'
-  waitAfterTransition: 300
   mousewheelEnabled: true
   swipeEnabled: true
   swipeThreshold: 0.1

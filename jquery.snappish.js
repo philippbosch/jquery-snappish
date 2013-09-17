@@ -2,14 +2,14 @@
 (function() {
 
   $.fn.snappish = function(opts) {
-    var $main, $slides, $wrapper, counter, inTransition, scroll, scrollAnimate, scrollDistance, settings, slidesLength, transitionDuration;
+    var $main, $slides, $wrapper, currentSlideNum, inTransition, scroll, scrollDistancePerSlide, settings, slidesLength, transitionDuration;
     settings = $.extend({}, $.fn.snappish.defaults, opts);
     $wrapper = $(this);
     $main = $(settings.mainSelector);
     $slides = $(settings.slidesSelector);
     slidesLength = $slides.length;
-    counter = 0;
-    scrollDistance = 100 / slidesLength;
+    currentSlideNum = 0;
+    scrollDistancePerSlide = 100 / slidesLength;
     inTransition = false;
     transitionDuration = $main.css('transition-duration').toString();
     if (transitionDuration.match(/s$/)) {
@@ -21,18 +21,33 @@
     $main.addClass('snappish-main');
     $main.addClass("snappish-" + slidesLength + "-slides");
     $slides.addClass('snappish-slide');
-    scrollAnimate = function(distance) {
-      inTransition = true;
-      $main.css('transform', "translate3d(0," + distance + "%,0)");
-      return setTimeout(function() {
-        return inTransition = false;
-      }, transitionDuration + settings.waitAfterTransition);
-    };
     scroll = function(direction) {
-      if (direction === 'down' && counter < slidesLength - 1) {
-        return scrollAnimate((++counter) * -scrollDistance);
-      } else if (direction === 'up' && counter > 0) {
-        return scrollAnimate((--counter) * -scrollDistance);
+      var eventData, targetScrollDistance, targetSlideNum;
+      targetSlideNum = null;
+      if (direction === 'down' && currentSlideNum < slidesLength - 1) {
+        targetSlideNum = currentSlideNum + 1;
+      } else if (direction === 'up' && currentSlideNum > 0) {
+        targetSlideNum = currentSlideNum - 1;
+      }
+      if (targetSlideNum != null) {
+        inTransition = true;
+        targetScrollDistance = targetSlideNum * scrollDistancePerSlide * -1;
+        eventData = {
+          fromSlideNum: currentSlideNum,
+          fromSlide: $slides.eq(currentSlideNum),
+          toSlideNum: targetSlideNum,
+          toSlide: $slides.eq(targetSlideNum),
+          wrapper: $wrapper,
+          main: $main,
+          transitionDuration: transitionDuration
+        };
+        $wrapper.trigger('scrollbegin.snappish', eventData);
+        $main.css('transform', "translate3d(0," + targetScrollDistance + "%,0)");
+        currentSlideNum = targetSlideNum;
+        return setTimeout(function() {
+          inTransition = false;
+          return $wrapper.trigger('scrollend.snappish', eventData);
+        }, transitionDuration);
       }
     };
     if (settings.mousewheelEnabled) {
@@ -52,16 +67,16 @@
       $wrapper.on('swipeup', function(e) {
         return scroll('down');
       });
-      return $wrapper.on('swipedown', function(e) {
+      $wrapper.on('swipedown', function(e) {
         return scroll('up');
       });
     }
+    return $wrapper;
   };
 
   $.fn.snappish.defaults = {
     mainSelector: '.snappish-main',
     slidesSelector: '.snappish-main > *',
-    waitAfterTransition: 300,
     mousewheelEnabled: true,
     swipeEnabled: true,
     swipeThreshold: 0.1

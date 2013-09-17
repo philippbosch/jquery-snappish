@@ -18,8 +18,9 @@
             }
 
             article {
-                background: linear-gradient(#EEE, #FFF);
+                background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0));
                 text-align: center;
+                -webkit-transition: background-color 1s ease;
             }
 
             #wrapper {
@@ -47,7 +48,12 @@
         <script src="bower_components/jquery.event.swipe/js/jquery.event.swipe.js"></script>
         <script src="bower_components/jquery-snappish/jquery.snappish.js"></script>
         <script>
-            $('#wrapper').snappish();
+            $('#wrapper').snappish()
+                .on('scrollbegin.snappish', function(e, data) {
+                    data.toSlide.css('background-color', 'red');
+                }).on('scrollend.snappish', function(e, data) {
+                    data.toSlide.css('background-color', 'transparent');
+                });
         </script>
     </body>
 </html>
