@@ -1,12 +1,9 @@
 {
-  "name": "jquery.snappish",
+  "name": "jquery-snappish",
   "version": "0.1.0",
-  "main": "jquery.snappish.js",
-  "homepage": "https://github.com/philippbosch/jquery.snappish",
-  "authors": [
-    "Philipp Bosch <hello@pb.io>"
-  ],
   "description": "Snappy scrolling for multiple full-size elements inside a container",
+  "homepage": "https://github.com/philippbosch/jquery-snappish",
+  "main": "jquery.snappish.js",
   "keywords": [
     "scrolling",
     "snap",
@@ -21,6 +18,9 @@
     "jquery.event.swipe": "0.5.x"
   },
   "license": "MIT",
+  "authors": [
+    "Philipp Bosch <hello@pb.io>"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",
