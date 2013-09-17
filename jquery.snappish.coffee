@@ -6,10 +6,11 @@ $.fn.snappish = (opts) ->
   $main = $(settings.mainSelector)
   $slides = $(settings.slidesSelector)
 
+
   # Variables
-  slidesLength = $slides.length
+  numberOfSlides = $slides.length
   currentSlideNum = 0
-  scrollDistancePerSlide = 100/slidesLength
+  scrollDistancePerSlide = 100/numberOfSlides
   inTransition = false
   transitionDuration = $main.css('transition-duration').toString()
 
@@ -18,41 +19,52 @@ $.fn.snappish = (opts) ->
   else
     transitionDuration = transitionDuration.replace(/ms$/, '') * 1
 
+
   # Styling
   $wrapper.addClass 'snappish-wrapper'
   $main.addClass 'snappish-main'
-  $main.addClass "snappish-#{slidesLength}-slides"
+  $main.addClass "snappish-#{numberOfSlides}-slides"
   $slides.addClass 'snappish-slide'
+
 
   # Scrolling
   scroll = (direction) ->
     targetSlideNum = null
 
-    if direction == 'down' && currentSlideNum < slidesLength-1
+    if direction == 'down' && currentSlideNum < numberOfSlides-1
       targetSlideNum = currentSlideNum+1
     else if direction == 'up' && currentSlideNum > 0
       targetSlideNum = currentSlideNum-1
 
-    if targetSlideNum?
-      inTransition = true
-      targetScrollDistance = targetSlideNum * scrollDistancePerSlide * -1
+    scrollToSlide(targetSlideNum) if targetSlideNum?
 
-      eventData =
-        fromSlideNum: currentSlideNum
-        fromSlide: $slides.eq(currentSlideNum)
-        toSlideNum: targetSlideNum
-        toSlide: $slides.eq(targetSlideNum)
-        wrapper: $wrapper
-        main: $main
-        transitionDuration: transitionDuration
+  scrollToSlide = (targetSlideNum) ->
+    return if targetSlideNum == currentSlideNum
 
-      $wrapper.trigger 'scrollbegin.snappish', eventData
-      $main.css 'transform', "translate3d(0,#{targetScrollDistance}%,0)"
-      currentSlideNum = targetSlideNum
-      setTimeout ->
-        inTransition = false
-        $wrapper.trigger 'scrollend.snappish', eventData
-      , transitionDuration
+    inTransition = true
+    targetScrollDistance = targetSlideNum * scrollDistancePerSlide * -1
+
+    eventData =
+      fromSlideNum: currentSlideNum
+      fromSlide: $slides.eq(currentSlideNum)
+      toSlideNum: targetSlideNum
+      toSlide: $slides.eq(targetSlideNum)
+      wrapper: $wrapper
+      main: $main
+      transitionDuration: transitionDuration
+
+    $wrapper.trigger 'scrollbegin.snappish', eventData
+    $main.css 'transform', "translate3d(0,#{targetScrollDistance}%,0)"
+    currentSlideNum = targetSlideNum
+
+    setTimeout ->
+      $wrapper.trigger 'scrollend.snappish', eventData
+    , transitionDuration
+
+    setTimeout ->
+      inTransition = false
+    , transitionDuration + 300
+
 
   # Mousewheel handling
   if settings.mousewheelEnabled
@@ -64,6 +76,7 @@ $.fn.snappish = (opts) ->
       else if deltaY > 0
         scroll('up')
 
+
   # Swipe handling
   if settings.swipeEnabled
     $.event.special.swipe.settings.threshold = settings.swipeThreshold
@@ -73,6 +86,20 @@ $.fn.snappish = (opts) ->
 
     $wrapper.on 'swipedown', (e) ->
       scroll('up')
+
+
+  # External events handling
+  $wrapper.on 'scrollup.snappish', (e) ->
+    targetSlideNum = currentSlideNum-1
+    scrollToSlide(targetSlideNum) if targetSlideNum >= 0
+
+  $wrapper.on 'scrolldown.snappish', (e) ->
+    targetSlideNum = currentSlideNum+1
+    scrollToSlide(targetSlideNum) if targetSlideNum < numberOfSlides
+
+  $wrapper.on 'scrollto.snappish', (e, targetSlideNum) ->
+    scrollToSlide(targetSlideNum)
+
 
   return $wrapper
 
