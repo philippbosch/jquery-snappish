@@ -8,8 +8,7 @@ $.fn.snappish = (opts) ->
 
   # Variables
   slidesLength = $slides.length
-  counter = 1
-  scrollDirection = null
+  counter = 0
   scrollDistance = 100/slidesLength
   inTransition = false
   transitionDuration = $main.css('transition-duration').toString()
@@ -33,15 +32,11 @@ $.fn.snappish = (opts) ->
       inTransition = false
     , transitionDuration + settings.waitAfterTransition
 
-  scrollLogic = ->
-    if scrollDirection == 'down' && counter < slidesLength
-      scrollAnimate counter*-scrollDistance
-      counter++
-    else if scrollDirection == 'up' && counter > 1
-      scrollAnimate (counter-2)*-scrollDistance
-      counter--
-    else
-      inTransition = false
+  scroll = (direction) ->
+    if direction == 'down' && counter < slidesLength-1
+      scrollAnimate (++counter)*-scrollDistance
+    else if direction == 'up' && counter > 0
+      scrollAnimate (--counter)*-scrollDistance
 
   # Mousewheel handling
   if settings.mousewheelEnabled
@@ -49,23 +44,19 @@ $.fn.snappish = (opts) ->
       return if inTransition
 
       if deltaY < 0
-        scrollDirection = 'down'
+        scroll('down')
       else if deltaY > 0
-        scrollDirection = 'up'
-
-      scrollLogic()
+        scroll('up')
 
   # Swipe handling
   if settings.swipeEnabled
     $.event.special.swipe.settings.threshold = settings.swipeThreshold
 
     $wrapper.on 'swipeup', (e) ->
-      scrollDirection = 'down'
-      scrollLogic()
+      scroll('down')
 
     $wrapper.on 'swipedown', (e) ->
-      scrollDirection = 'up'
-      scrollLogic()
+      scroll('up')
 
 
 # Default configuration

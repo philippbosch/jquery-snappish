@@ -2,14 +2,13 @@
 (function() {
 
   $.fn.snappish = function(opts) {
-    var $main, $slides, $wrapper, counter, inTransition, scrollAnimate, scrollDirection, scrollDistance, scrollLogic, settings, slidesLength, transitionDuration;
+    var $main, $slides, $wrapper, counter, inTransition, scroll, scrollAnimate, scrollDistance, settings, slidesLength, transitionDuration;
     settings = $.extend({}, $.fn.snappish.defaults, opts);
     $wrapper = $(this);
     $main = $(settings.mainSelector);
     $slides = $(settings.slidesSelector);
     slidesLength = $slides.length;
-    counter = 1;
-    scrollDirection = null;
+    counter = 0;
     scrollDistance = 100 / slidesLength;
     inTransition = false;
     transitionDuration = $main.css('transition-duration').toString();
@@ -29,15 +28,11 @@
         return inTransition = false;
       }, transitionDuration + settings.waitAfterTransition);
     };
-    scrollLogic = function() {
-      if (scrollDirection === 'down' && counter < slidesLength) {
-        scrollAnimate(counter * -scrollDistance);
-        return counter++;
-      } else if (scrollDirection === 'up' && counter > 1) {
-        scrollAnimate((counter - 2) * -scrollDistance);
-        return counter--;
-      } else {
-        return inTransition = false;
+    scroll = function(direction) {
+      if (direction === 'down' && counter < slidesLength - 1) {
+        return scrollAnimate((++counter) * -scrollDistance);
+      } else if (direction === 'up' && counter > 0) {
+        return scrollAnimate((--counter) * -scrollDistance);
       }
     };
     if (settings.mousewheelEnabled) {
@@ -46,22 +41,19 @@
           return;
         }
         if (deltaY < 0) {
-          scrollDirection = 'down';
+          return scroll('down');
         } else if (deltaY > 0) {
-          scrollDirection = 'up';
+          return scroll('up');
         }
-        return scrollLogic();
       });
     }
     if (settings.swipeEnabled) {
       $.event.special.swipe.settings.threshold = settings.swipeThreshold;
       $wrapper.on('swipeup', function(e) {
-        scrollDirection = 'down';
-        return scrollLogic();
+        return scroll('down');
       });
       return $wrapper.on('swipedown', function(e) {
-        scrollDirection = 'up';
-        return scrollLogic();
+        return scroll('up');
       });
     }
   };

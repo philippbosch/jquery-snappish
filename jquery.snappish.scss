@@ -1,8 +1,6 @@
 @import "compass";
 
 .snappish-wrapper {
-    width: 100%;
-    height: 100%;
     float: left;
     z-index: 10;
     overflow: hidden;
@@ -10,7 +8,6 @@
 
 .snappish-main {
     width: 100%;
-    height: 100%;
     z-index: 9;
     @include transition-duration(1s);
     @include transition-timing-function(ease);
