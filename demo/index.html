@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>jquery-snappish Demo</title>
+        <link rel="stylesheet" type="text/css" href="bower_components/jquery-snappish/jquery.snappish.css">
+        <style>
+            body, html {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                padding: 0;
+                margin: 0;
+            }
+
+            body {
+                font: 48px sans-serif;
+            }
+
+            article {
+                background: linear-gradient(#EEE, #FFF);
+                text-align: center;
+            }
+
+            #wrapper {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <div id="wrapper">
+            <div class="snappish-main">
+                <article>1</article>
+                <article>2</article>
+                <article>3</article>
+                <article>4</article>
+                <article>5</article>
+                <article>6</article>
+            </div>
+        </div>
+
+        <script src="bower_components/jquery/jquery.min.js"></script>
+        <script src="bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+        <script src="bower_components/jquery.event.move/js/jquery.event.move.js"></script>
+        <script src="bower_components/jquery.event.swipe/js/jquery.event.swipe.js"></script>
+        <script src="bower_components/jquery-snappish/jquery.snappish.js"></script>
+        <script>
+            $('#wrapper').snappish();
+        </script>
+    </body>
+</html>
