@@ -11,11 +11,20 @@ pre code {
     font-size: 120%;
 }
 
-
 .panel pre {
     margin: 0;
     border-radius: 2px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+    border: 0;
+}
+
+#github-ribbon {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#github-ribbon img {
     border: 0;
 }
