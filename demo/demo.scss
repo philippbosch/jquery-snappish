@@ -37,28 +37,27 @@ nav {
         text-align: center;
         line-height: 1;
 
+        li {
+            height: 10px;
+            padding: 5px 0;
+        }
+
         a {
             text-decoration: none;
-            color: #000;
+            background: #aaa;
+            display: block;
+            width: 4px;
+            height: 4px;
+            border: 3px solid #fff;
+            border-radius: 5px;
+            margin: 0 auto;
+            @include transition(all .25s ease);
 
-            &.top, &.up, &.down, &.bottom {
-                display: block;
-                @include transform(rotate(-90deg) scale(1.5));
-            }
-
-            &[data-slide-num] {
+            &.active {
                 background: transparent;
+                border: 1px solid #aaa;
                 width: 8px;
                 height: 8px;
-                display: block;
-                margin: 5px auto;
-                border: 1px solid #000;
-                border-radius: 5px;
-                @include transition(background-color .5s ease);
-
-                &.active {
-                    background: #000;
-                }
             }
         }
     }
@@ -86,6 +85,8 @@ article {
         left: 0;
         bottom: 0;
         right: 0;
+        max-width: 1024px;
+        margin: 0 auto;
         background: #FFF;
         background-position: center center;
         background-repeat: no-repeat;

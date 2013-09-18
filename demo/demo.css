@@ -30,30 +30,27 @@ nav {
     padding: 0;
     text-align: center;
     line-height: 1; }
+    nav ul li {
+      height: 10px;
+      padding: 5px 0; }
     nav ul a {
       text-decoration: none;
-      color: #000; }
-      nav ul a.top, nav ul a.up, nav ul a.down, nav ul a.bottom {
-        display: block;
-        -webkit-transform: rotate(-90deg) scale(1.5);
-        -moz-transform: rotate(-90deg) scale(1.5);
-        -ms-transform: rotate(-90deg) scale(1.5);
-        -o-transform: rotate(-90deg) scale(1.5);
-        transform: rotate(-90deg) scale(1.5); }
-      nav ul a[data-slide-num] {
+      background: #aaa;
+      display: block;
+      width: 4px;
+      height: 4px;
+      border: 3px solid #fff;
+      border-radius: 5px;
+      margin: 0 auto;
+      -webkit-transition: all 0.25s ease;
+      -moz-transition: all 0.25s ease;
+      -o-transition: all 0.25s ease;
+      transition: all 0.25s ease; }
+      nav ul a.active {
         background: transparent;
+        border: 1px solid #aaa;
         width: 8px;
-        height: 8px;
-        display: block;
-        margin: 5px auto;
-        border: 1px solid #000;
-        border-radius: 5px;
-        -webkit-transition: background-color 0.5s ease;
-        -moz-transition: background-color 0.5s ease;
-        -o-transition: background-color 0.5s ease;
-        transition: background-color 0.5s ease; }
-        nav ul a[data-slide-num].active {
-          background: #000; }
+        height: 8px; }
 
 footer {
   position: fixed;
@@ -73,6 +70,8 @@ article {
     left: 0;
     bottom: 0;
     right: 0;
+    max-width: 1024px;
+    margin: 0 auto;
     background: #FFF;
     background-position: center center;
     background-repeat: no-repeat;
