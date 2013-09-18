@@ -10,6 +10,9 @@ body {
   font-family: "HelveticaNeue-Light", sans-serif;
   font-weight: 200; }
 
+a {
+  color: #999; }
+
 #wrapper {
   width: 100%;
   height: 100%; }
