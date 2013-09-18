@@ -1,0 +1,41 @@
+{
+  "name": "jquery-snappish",
+  "version": "0.2.0",
+  "description": "Snappy scrolling for multiple full-size elements inside a container",
+  "homepage": "https://github.com/philippbosch/jquery-snappish",
+  "main": "jquery.snappish.js",
+  "keywords": [
+    "scrolling",
+    "snap",
+    "snapscroll",
+    "snappy",
+    "slide"
+  ],
+  "dependencies": {
+    "jquery": ">=1.7.0",
+    "jquery-mousewheel": "3.1.x",
+    "jquery.event.move": "1.x",
+    "jquery.event.swipe": "0.5.x"
+  },
+  "license": "MIT",
+  "authors": [
+    "Philipp Bosch <hello@pb.io>"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "0.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.2.0",
+    "commit": "bb3a36567ab5b1a9e144e30dd67abe93cb897b98"
+  },
+  "_source": "git://github.com/philippbosch/jquery-snappish.git",
+  "_target": "~0.2.0",
+  "_originalSource": "jquery-snappish",
+  "_direct": true
+}

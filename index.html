@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>jquery-snappish</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="bower_components/prismjs/prism-tomorrow.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="bower_components/bootstrap/assets/js/html5shiv.js"></script>
+      <script src="bower_components/bootstrap/assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+
+      <div class="page-header">
+        <h1>jquery-snappish <small>Snappy scrolling like a pro</small></h1>
+      </div>
+
+      <p class="lead" id="home">A small <a href="http://jquery.com/">jQuery</a> plugin that brings the snappy scrolling behavior that e.g. Apple uses for its <a href="http://www.apple.com/iphone-5s/">iPhone 5s</a> and <a href="http://www.apple.com/iphone-5c/">5c</a> pages to your website.</p>
+
+      <p><a href="demo/" class="btn btn-primary btn-lg">Demo</a>    * includes cat content</p>
+      <br>
+
+      <h2>Installation</h2>
+      <h4>Using <a href="http://bower.io/">Bower</a> <small>(recommended)</small></h4>
+      <p><a href="http://bower.io/">Bower</a> is a package manager for the web. Once Bower is installed it is super easy to install jquery-snappish:</p>
+      <pre><code class="language-bash">$ bower install jquery-snappish</code></pre>
+      <br>
+
+      <h4>Using Git</h4>
+      <p>If you prefer to get a fresh checkout of the Git repo, check our <a href="https://github.com/philippbosch/jquery-snappish">Github page</a> or clone right away:</p>
+      <pre><code class="language-bash">$ git clone https://github.com/philippbosch/jquery-snappish.git</code></pre>
+      <br>
+
+      <h4>Manual Download</h4>
+      <p>Download a ZIP archive of the source code:</p>
+      <p><a href="https://github.com/philippbosch/jquery-snappish/archive/0.2.0.zip" class="btn btn-primary">v0.2.0</a> <a href="https://github.com/philippbosch/jquery-snappish/archive/master.zip" class="btn btn-primary">master</a></p>
+      <br>
+
+      <h4>Dependencies</h4>
+      <p>jquery-snappish depends on <a href="http://jquery.com/">jQuery</a> (surprise!) and the following plugins:</p>
+      <ul>
+        <li><a href="https://github.com/brandonaaron/jquery-mousewheel">jquery-mousewheel</a></li>
+        <li><a href="https://github.com/stephband/jquery.event.move">jquery.event.move</a></li>
+        <li><a href="https://github.com/stephband/jquery.event.swipe">jquery.event.swipe</a></li>
+      </ul>
+      <p>If you are using Bower to install jquery-snappish it will automatically install these dependencies for you. Otherwise make sure you download them on your own.</p>
+
+
+      <h2>Usage</h2>
+      <p>In order to make use of jquery-snappish follow these steps:</p>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="text-muted">1.</span> Include the stylesheet <small>somewhere in your <code>&lt;head&gt;</code></small></h3>
+        </div>
+        <pre><code class="language-markup">&lt;link href="path/to/jquery.snappish.css" rel="stylesheet"&gt;</code></pre>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="text-muted">2.</span> Include the javascripts <small>right before the <code>&lt;/body&gt;</code></small></h3>
+        </div>
+        <pre><code class="language-markup">&lt;script src="path/to/jquery.js"&gt;&lt;/script&gt;
+&lt;script src="path/to/jquery.mousewheel.js"&gt;&lt;/script&gt;
+&lt;script src="path/to/jquery.event.move.js"&gt;&lt;/script&gt;
+&lt;script src="path/to/jquery.event.swipe.js"&gt;&lt;/script&gt;
+&lt;script src="path/to/jquery.snappish.js"&gt;&lt;/script&gt;</code></pre>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="text-muted">3.</span> Create the basic HTML structure</h3>
+        </div>
+        <div class="panel-body">
+          jquery-snappish has minimal requirements regarding your HTML markup. Essentially it needs a wrapping element (<code>#mywrapper</code> in the example) and within that a container element (needs to have a class of <code>.snappish-main</code>) for the individual slides. Before or after the <code>.snappish-container</code> you can include other elements such as a navigation menu or a footer. It might be a good idea to apply <code>position: fixed</code> to these with CSS.
+        </div>
+        <pre><code class="language-markup">&lt;div id="mywrapper"&gt;
+    &lt;div class="snappish-main"&gt;&lt;!-- we need this class name to determine the scrollable content --&gt;
+      &lt;div&gt;&lt;!-- the first slide --&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;!-- the second slide --&gt;&lt;/div&gt;
+      &lt;div&gt;&lt;!-- the third slide --&gt;&lt;/div&gt;
+      &lt;!-- create as many slides as you want --&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title"><span class="text-muted">4.</span> Initialize jquery-snappish <small>in a <code>&lt;script&gt;</code> tag or an exteral JS file</small></h3>
+        </div>
+        <pre><code class="language-javascript">$('#mywrapper').snappish();</code></pre>
+      </div>
+
+
+    </div>
+
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/prismjs/prism.js"></script>
+    <script src="bower_components/prismjs/components/prism-bash.js"></script>
+  </body>
+</html>

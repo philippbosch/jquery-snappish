@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>jquery-snappish Demo</title>
+        <link rel="stylesheet" type="text/css" href="../bower_components/jquery-snappish/jquery.snappish.css">
+        <link rel="stylesheet" type="text/css" href="demo.css">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <div id="wrapper">
+            <nav>
+                <ul>
+                    <li><a href="#" data-slide-num="0" class="active"></a></li>
+                    <li><a href="#" data-slide-num="1"></a></li>
+                    <li><a href="#" data-slide-num="2"></a></li>
+                    <li><a href="#" data-slide-num="3"></a></li>
+                </ul>
+            </nav>
+            <div class="snappish-main">
+                <article class="slide-1 active">
+                    <div class="image"></div>
+                    <h1>This is the first slide.</h1>
+                    <p>Try scrolling down now.</p>
+                </article>
+                <article class="slide-2">
+                    <div class="image"></div>
+                    <h1>Here's the second.</h1>
+                    <p>Keep scrolling.</p>
+                </article>
+                <article class="slide-3">
+                    <div class="image"></div>
+                    <h1>And the third.</h1>
+                    <p>Just a little more.</p>
+                </article>
+                <article class="slide-4">
+                    <div class="image"></div>
+                    <h1>The last slide.</h1>
+                    <p>That's it, folks.</p>
+                </article>
+            </div>
+            <footer>
+                All photos by <a href="http://www.flickr.com/photos/sergiu_bacioiu/">Sergiu Bacioiu</a>:
+                <a href="http://www.flickr.com/photos/sergiu_bacioiu/4394955222/">1</a>
+                <a href="http://www.flickr.com/photos/sergiu_bacioiu/4324207831/">2</a>
+                <a href="http://www.flickr.com/photos/sergiu_bacioiu/4327564714/">3</a>
+                <a href="http://www.flickr.com/photos/sergiu_bacioiu/4315795138/">4</a>
+            </footer>
+        </div>
+
+        <script src="../bower_components/jquery/jquery.min.js"></script>
+        <script src="../bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+        <script src="../bower_components/jquery.event.move/js/jquery.event.move.js"></script>
+        <script src="../bower_components/jquery.event.swipe/js/jquery.event.swipe.js"></script>
+        <script src="../bower_components/jquery-snappish/jquery.snappish.js"></script>
+        <script>
+            var $snappish = $('#wrapper').snappish();
+
+            $snappish.on('scrollbegin.snappish', function(e, data) {
+                data.toSlide.addClass('active');
+                $('nav a').removeClass('active');
+                $('nav a[data-slide-num="' + data.toSlideNum + '"]').addClass('active');
+            }).on('scrollend.snappish', function(e, data) {
+                data.fromSlide.removeClass('active');
+            });
+
+            $('nav a').on('click', function(e) {
+                e.preventDefault();
+                $snappish.trigger('scrollto.snappish', $(this).data('slide-num'));
+            });
+        </script>
+    </body>
+</html>

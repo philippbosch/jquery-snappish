@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>jquery-snappish Demo</title>
+        <link rel="stylesheet" type="text/css" href="bower_components/jquery-snappish/jquery.snappish.css">
+        <style>
+            body, html {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                padding: 0;
+                margin: 0;
+            }
+
+            body {
+                font: 48px sans-serif;
+            }
+
+            article {
+                background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0));
+                text-align: center;
+                -webkit-transition: background-color 1s ease;
+                -moz-transition: background-color 1s ease;
+                -o-transition: background-color 1s ease;
+                -ms-transition: background-color 1s ease;
+                transition: background-color 1s ease;
+            }
+
+            #wrapper {
+                width: 100%;
+                height: 100%;
+            }
+
+            .header {
+                position: fixed;
+                left: 0;
+                top: 0;
+                right: 0;
+                height: 50px;
+                background: rgba(255,255,255,0.5);
+                z-index: 100;
+                font-size: 16px;
+                text-align: center;
+            }
+        </style>
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <div id="wrapper">
+            <div class="header">
+                <button class="up">up</button>
+                <button class="down">down</button>
+                <button class="top">top</button>
+                <button class="bottom">bottom</button>
+            </div>
+            <div class="snappish-main">
+                <article>1</article>
+                <article>2</article>
+                <article>3</article>
+                <article>4</article>
+                <article>5</article>
+                <article>6</article>
+            </div>
+        </div>
+
+        <script src="bower_components/jquery/jquery.min.js"></script>
+        <script src="bower_components/jquery-mousewheel/jquery.mousewheel.js"></script>
+        <script src="bower_components/jquery.event.move/js/jquery.event.move.js"></script>
+        <script src="bower_components/jquery.event.swipe/js/jquery.event.swipe.js"></script>
+        <script src="bower_components/jquery-snappish/jquery.snappish.js"></script>
+        <script>
+            $('#wrapper').snappish()
+                .on('scrollbegin.snappish', function(e, data) {
+                    data.toSlide.css('background-color', 'rgba(0,0,0,0.2)');
+                }).on('scrollend.snappish', function(e, data) {
+                    data.toSlide.css('background-color', 'transparent');
+                });
+
+            $('button.up').on('click', function() {
+                $('#wrapper').trigger('scrollup.snappish');
+            });
+
+            $('button.down').on('click', function() {
+                $('#wrapper').trigger('scrolldown.snappish');
+            });
+
+            $('button.top').on('click', function() {
+                $('#wrapper').trigger('scrollto.snappish', 0);
+            });
+
+            $('button.bottom').on('click', function() {
+                $('#wrapper').trigger('scrollto.snappish', 5);
+            });
+
+        </script>
+    </body>
+</html>

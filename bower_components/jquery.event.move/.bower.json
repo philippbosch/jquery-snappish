@@ -1,0 +1,14 @@
+{
+  "name": "jquery.event.move",
+  "homepage": "https://github.com/stephband/jquery.event.move",
+  "version": "1.3.5",
+  "_release": "1.3.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.3.5",
+    "commit": "9e24aa1898a05ff70f3622ee0a57b84c37cdd3dc"
+  },
+  "_source": "git://github.com/stephband/jquery.event.move.git",
+  "_target": "1.x",
+  "_originalSource": "jquery.event.move"
+}

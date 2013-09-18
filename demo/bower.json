@@ -1,0 +1,8 @@
+{
+  "name": "jquery-snappish-demo",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "jquery-snappish": "~0.1.0"
+  }
+}

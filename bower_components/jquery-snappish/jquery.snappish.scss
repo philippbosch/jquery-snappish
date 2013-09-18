@@ -1,0 +1,30 @@
+@import "compass";
+
+.snappish-wrapper {
+    float: left;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.snappish-main {
+    width: 100%;
+    z-index: 9;
+    @include transition-duration(1s);
+    @include transition-timing-function(ease);
+    @include transition-property(transform);
+}
+
+@for $i from 1 through 20 {
+    .snappish-#{$i}-slides {
+        height: 100% * $i;
+
+        .snappish-slide {
+            height: 100% / $i;
+        }
+    }
+}
+
+.snappish-slide {
+    width: 100%;
+    @include transform(translateZ(0));
+}
