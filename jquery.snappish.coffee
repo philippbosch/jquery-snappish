@@ -38,8 +38,9 @@ $.fn.snappish = (opts) ->
 
     scrollToSlide(targetSlideNum) if targetSlideNum?
 
-  scrollToSlide = (targetSlideNum) ->
+  scrollToSlide = (targetSlideNum, doAnimate) ->
     return if targetSlideNum == currentSlideNum
+    doAnimate =  (typeof doAnimate == "undefined" || doAnimate);
 
     inTransition = true
     targetScrollDistance = targetSlideNum * scrollDistancePerSlide * -1
@@ -54,17 +55,29 @@ $.fn.snappish = (opts) ->
       transitionDuration: transitionDuration
 
     $wrapper.trigger 'scrollbegin.snappish', eventData
+    if !doAnimate
+      originalTransitionDuration = $main.css('transition-duration').toString()
+      $main.css 'transition-duration', '0'
     $main.css 'transform', "translate3d(0,#{targetScrollDistance}%,0)"
     currentSlideNum = targetSlideNum
 
-    setTimeout ->
+    triggerScrollEnd = (eventData) ->
       $wrapper.trigger 'scrollend.snappish', eventData
-    , transitionDuration
 
-    setTimeout ->
+    if doAnimate
+      setTimeout ->
+        triggerScrollEnd(eventData)
+      , transitionDuration
+
+      setTimeout ->
+        inTransition = false
+      , transitionDuration + 300
+    else
+      triggerScrollEnd(eventData)
       inTransition = false
-    , transitionDuration + 300
-
+      setTimeout ->
+        $main.css('transition-duration', originalTransitionDuration)
+      , 0
 
   # Mousewheel handling
   if settings.mousewheelEnabled
@@ -97,8 +110,18 @@ $.fn.snappish = (opts) ->
     targetSlideNum = currentSlideNum+1
     scrollToSlide(targetSlideNum) if targetSlideNum < numberOfSlides
 
-  $wrapper.on 'scrollto.snappish', (e, targetSlideNum) ->
-    scrollToSlide(targetSlideNum)
+  $wrapper.on 'scrollto.snappish', (e, opts) ->
+    doAnimate = true
+    if typeof opts != 'undefined'
+      if typeof opts == 'object'
+        targetSlideNum = opts.targetSlideNum
+        if typeof opts.doAnimate != 'undefined'
+          doAnimate = opts.doAnimate
+      else if typeof opts  == 'number' || typeof opts == 'string'
+        targetSlideNum = opts
+      else
+        return
+    scrollToSlide(targetSlideNum, doAnimate)
 
 
   return $wrapper

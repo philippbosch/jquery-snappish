@@ -33,11 +33,12 @@
         return scrollToSlide(targetSlideNum);
       }
     };
-    scrollToSlide = function(targetSlideNum) {
-      var eventData, targetScrollDistance;
+    scrollToSlide = function(targetSlideNum, doAnimate) {
+      var eventData, originalTransitionDuration, targetScrollDistance, triggerScrollEnd;
       if (targetSlideNum === currentSlideNum) {
         return;
       }
+      doAnimate = typeof doAnimate === "undefined" || doAnimate;
       inTransition = true;
       targetScrollDistance = targetSlideNum * scrollDistancePerSlide * -1;
       eventData = {
@@ -50,14 +51,29 @@
         transitionDuration: transitionDuration
       };
       $wrapper.trigger('scrollbegin.snappish', eventData);
+      if (!doAnimate) {
+        originalTransitionDuration = $main.css('transition-duration').toString();
+        $main.css('transition-duration', '0');
+      }
       $main.css('transform', "translate3d(0," + targetScrollDistance + "%,0)");
       currentSlideNum = targetSlideNum;
-      setTimeout(function() {
+      triggerScrollEnd = function(eventData) {
         return $wrapper.trigger('scrollend.snappish', eventData);
-      }, transitionDuration);
-      return setTimeout(function() {
-        return inTransition = false;
-      }, transitionDuration + 300);
+      };
+      if (doAnimate) {
+        setTimeout(function() {
+          return triggerScrollEnd(eventData);
+        }, transitionDuration);
+        return setTimeout(function() {
+          return inTransition = false;
+        }, transitionDuration + 300);
+      } else {
+        triggerScrollEnd(eventData);
+        inTransition = false;
+        return setTimeout(function() {
+          return $main.css('transition-duration', originalTransitionDuration);
+        }, 0);
+      }
     };
     if (settings.mousewheelEnabled) {
       $wrapper.on('mousewheel', function(e, delta, deltaX, deltaY) {
@@ -94,8 +110,22 @@
         return scrollToSlide(targetSlideNum);
       }
     });
-    $wrapper.on('scrollto.snappish', function(e, targetSlideNum) {
-      return scrollToSlide(targetSlideNum);
+    $wrapper.on('scrollto.snappish', function(e, opts) {
+      var doAnimate, targetSlideNum;
+      doAnimate = true;
+      if (typeof opts !== 'undefined') {
+        if (typeof opts === 'object') {
+          targetSlideNum = opts.targetSlideNum;
+          if (typeof opts.doAnimate !== 'undefined') {
+            doAnimate = opts.doAnimate;
+          }
+        } else if (typeof opts === 'number' || typeof opts === 'string') {
+          targetSlideNum = opts;
+        } else {
+          return;
+        }
+      }
+      return scrollToSlide(targetSlideNum, doAnimate);
     });
     return $wrapper;
   };
