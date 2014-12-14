@@ -1,6 +1,6 @@
 {
   "name": "jquery-snappish",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Snappy scrolling for multiple full-size elements inside a container",
   "homepage": "https://github.com/philippbosch/jquery-snappish",
   "main": "jquery.snappish.js",
