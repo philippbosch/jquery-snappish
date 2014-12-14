@@ -129,7 +129,7 @@
       <ul>
         <li><code>scrollup.snappish</code> – scroll up one slide</li>
         <li><code>scrolldown.snappish</code> – scroll down one slide</li>
-        <li><code>scrollto.snappish</code> – scroll to the specified slide identified by its number (0-based) given as the second argument to the <code>trigger()</code> function.</li>
+        <li><code>scrollto.snappish</code> – scroll to the specified slide, the second argument to the <code>trigger()</code> function can be a number (0-based) or an object with <code>targetSlideNum</code> property. It's also possible to disable animations with the <code>doAnimate</code> property on the object.</li>
       </ul>
 
       <h4>Example</h4>
@@ -143,6 +143,11 @@ $('button.down').on('click', function(e) {
 
 $('button.top').on('click', function(e) {
   $('#mywrapper').trigger('scrollto.snappish', 0);  // scroll to the first (=0) slide
+  // OR
+  $('#mywrapper').trigger('scrollto.snappish', { // scroll to the first (=0) slide without animations
+    targetSlideNum: 0, 
+    doAnimation: false
+  });
 });
 </code></pre>
 
